@@ -9,25 +9,38 @@ set(GENERATE_OUTPUT_DIR "${CMAKE_BINARY_DIR}/src_generated/")
 file(MAKE_DIRECTORY "${GENERATE_OUTPUT_DIR}")
 include_directories("${GENERATE_OUTPUT_DIR}")
 
-#set(UA_NAMESPACE_ZERO FULL)
+# Generate types and namespace for DI
+set(OPEN62541_DIR /home/ubuntu18ros/open62541)
 
-ua_generate_nodeset_and_datatypes(
+# Generate types and namespace for DI
+    ua_generate_nodeset_and_datatypes(
+        NAME "di"
+        FILE_CSV "${OPEN62541_DIR}/deps/ua-nodeset/DI/OpcUaDiModel.csv"
+        FILE_BSD "${OPEN62541_DIR}/deps/ua-nodeset/DI/Opc.Ua.Di.Types.bsd"
+        NAMESPACE_MAP "2:http://opcfoundation.org/UA/DI/"
+        FILE_NS "${OPEN62541_DIR}/deps/ua-nodeset/DI/Opc.Ua.Di.NodeSet2.xml"
+        INTERN
+    )
+        
+    # generate PLCopen namespace which is using DI
+    ua_generate_nodeset_and_datatypes(
         NAME "Robotics"
-        TARGET_PREFIX "${PROJECT_NAME}"
+        # PLCopen does not define custom types. Only generate the nodeset
         FILE_NS "${PROJECT_SOURCE_DIR}/Opc.Ua.Robotics.NodeSet2.xml"
-#	FILE_CSV "${PROJECT_SOURCE_DIR}/NodeIds.csv"
-#	NAMESPACE_MAP "1:http://opcfoundation.org/UA/Robotics/"
-        OUTPUT_DIR "${GENERATE_OUTPUT_DIR}"
+        # PLCopen depends on the di nodeset, which must be generated before
+        DEPENDS "di"
         INTERNAL
-)
-
-# Previous macro automatically sets some variables which hold the generated source code files using the provided NAME
-add_executable(opcua-Robotics-server
+    )
+    
+    add_executable(opcua-Robotics-server
+               ${UA_NODESET_DI_SOURCES}
                ${UA_NODESET_ROBOTICS_SOURCES}
+               ${UA_TYPES_DI_SOURCES}
                ${UA_TYPES_ROBOTICS_SOURCES}
                main.c)
-               
-# Make sure the nodeset compiler is execute before compiling the main file
-add_dependencies(opcua-Robotics-server ${PROJECT_NAME}-ns-Robotics)
+    
+    add_dependencies(opcua-Robotics-server ${PROJECT_NAME}-ns-Robotics)
 
+    
+    
 target_link_libraries(opcua-Robotics-server open62541::open62541)

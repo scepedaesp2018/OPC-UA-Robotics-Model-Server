@@ -1,0 +1,7 @@
+/home/ubuntu18ros/OPC-UA-Robotics-Model-Server/build/CMakeFiles/rebuild_cache.dir
+/home/ubuntu18ros/OPC-UA-Robotics-Model-Server/build/CMakeFiles/open62541-generator-ids-di.dir
+/home/ubuntu18ros/OPC-UA-Robotics-Model-Server/build/CMakeFiles/open62541-generator-types-di.dir
+/home/ubuntu18ros/OPC-UA-Robotics-Model-Server/build/CMakeFiles/open62541-generator-ns-di.dir
+/home/ubuntu18ros/OPC-UA-Robotics-Model-Server/build/CMakeFiles/opcua-Robotics-server.dir
+/home/ubuntu18ros/OPC-UA-Robotics-Model-Server/build/CMakeFiles/edit_cache.dir
+/home/ubuntu18ros/OPC-UA-Robotics-Model-Server/build/CMakeFiles/open62541-generator-ns-Robotics.dir
